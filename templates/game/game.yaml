@@ -1,0 +1,12 @@
+name: "{{PROJECT_NAME}}"
+ctk_id: "{{CTK_ID}}"
+slug: "{{PROJECT_SLUG}}"
+engine: "pygame"
+genre: "starter"
+platforms:
+  - web
+  - desktop
+music_catalog: "data/music.csv"
+leaderboards: false
+achievements: true
+controller_support: false

@@ -1,20 +1,22 @@
 # Changelog
 
+## v0.4.0
+
+- Added CTK creative catalog system.
+- Added catalog CSV commands.
+- Added music CSV initialization and folder import commands.
+- Added game data CSV structure for music, levels, items, dialogue, achievements, and catalog.
+- Expanded game template to support catalog-driven music integration.
+- Added documentation for catalog and music-to-game workflows.
+
+## v0.3.0
+
+- Added CTK naming tools.
+- Added project `metadata.csv` generation.
+- Added CSV validation.
+- Added game template.
+
 ## v0.2.0
 
-- Rebuilt package using a professional `src/` layout.
-- Fixed broken CLI syntax error from v0.1.1.
-- Added `python -m ctk` support.
-- Added `ctk doctor` environment checker.
-- Added basic automated tests.
-- Added GitHub Actions CI workflow.
-- Improved README install and troubleshooting guidance.
-
-## v0.1.1
-
-- Fixed Python package discovery issue.
-- Added first setup troubleshooting guidance.
-
-## v0.1.0
-
-- Initial foundational repo.
+- Rebuilt package with `src/` layout.
+- Added working CLI and tests.

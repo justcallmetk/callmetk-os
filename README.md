@@ -1,71 +1,53 @@
 # CallMeTK OS
 
-CallMeTK OS is the command center for CallMeTK creative software projects.
-It helps create, version, publish, release, and eventually automate projects like websites, AI music tools, education apps, and game prototypes.
+CallMeTK OS is a developer and creator toolkit for building websites, AI apps, music release systems, educational tools, and games with clean naming, metadata, and CSV-first workflows.
 
 ## Version
 
-Current version: **0.2.0**
+v0.4.0 — Catalog Foundation
 
 ## Install locally
 
-From inside this folder:
-
 ```bash
 python -m pip install -e .
+ctk doctor
 ```
 
-Then test:
+## Common commands
 
 ```bash
 ctk --help
-ctk doctor
-```
-
-Alternative:
-
-```bash
-python -m ctk --help
-python -m ctk doctor
-```
-
-## Important
-
-This is a Python project. Do not run `npm install` unless a future version includes a `package.json`.
-
-## Commands
-
-```bash
-ctk doctor
 ctk version
-ctk new website ../my-website
-ctk publish -m "Update project"
-ctk release 0.2.1
+ctk doctor
 ```
 
-## GitHub upload
-
-Create an empty repository at:
-
-```text
-https://github.com/justcallmetk/callmetk-os
-```
-
-Then run:
+Create projects:
 
 ```bash
-git init
-git add .
-git commit -m "Initialize CallMeTK OS v0.2.0"
-git branch -M main
-git remote add origin https://github.com/justcallmetk/callmetk-os.git
-git push -u origin main
+ctk new website "CallMe TK Website" ../callmetk-website
+ctk new music-release "Exotic Brown Pi 2" ../exotic-brown-pi-2
+ctk new game "EBP Ninja" ../ebp-ninja
 ```
 
-## Roadmap
+Naming and CSV:
 
-- v0.2: production-quality Python foundation
-- v0.3: stronger project generator
-- v0.4: GitHub automation
-- v0.5: AI release notes and changelog assistant
-- v1.0: stable public release
+```bash
+ctk naming slug "Exotic Brown Pi 2"
+ctk naming id music-release "Exotic Brown Pi 2"
+ctk csv validate metadata.csv
+```
+
+Catalog and music:
+
+```bash
+ctk catalog init catalog.csv
+ctk catalog add song "Exotic Brown Pi" --path assets/music/exotic-brown-pi.mp3 --tags "gritty;underground"
+ctk music init data/music.csv
+ctk music import ./assets/music data/music.csv --artist "CallMe TK"
+```
+
+## Philosophy
+
+If we have to do it twice, CTK OS should automate it.
+
+The AI recommends. The human approves.

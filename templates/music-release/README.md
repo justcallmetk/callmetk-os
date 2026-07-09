@@ -1,6 +1,12 @@
 # {{PROJECT_NAME}}
 
-Generated from the CallMeTK OS 'music-release' template.
+Generated from CallMeTK OS.
+
+## CTK Metadata
+
+- CTK ID: `{{CTK_ID}}`
+- Slug: `{{PROJECT_SLUG}}`
+- Metadata file: `metadata.csv`
 
 ## Quick Start
 
