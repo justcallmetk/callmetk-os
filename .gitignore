@@ -8,3 +8,19 @@ build/
 *.egg-info/
 .DS_Store
 .env
+
+# Local music/audio assets
+assets/music/
+*.wav
+*.mp3
+*.aiff
+*.flac
+
+# Local music and media assets
+assets/music/
+*.wav
+*.wave
+*.mp3
+*.aiff
+*.aif
+*.flac
