@@ -24,3 +24,12 @@ assets/music/
 *.aiff
 *.aif
 *.flac
+
+# Local music and media assets
+assets/music/
+*.wav
+*.wave
+*.mp3
+*.aiff
+*.aif
+*.flac
