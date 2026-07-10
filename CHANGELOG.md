@@ -20,3 +20,10 @@
 
 - Rebuilt package with `src/` layout.
 - Added working CLI and tests.
+
+## v0.5.0 - Project Factory
+
+- Added `education-app` alias while preserving `education-tool` compatibility.
+- Added shared `project.yaml`, `metadata.csv`, `catalog.csv`, and GitHub Actions CI to every generated project.
+- Added `ctk check` for project structure, CSV validation, and capability reporting.
+- Expanded automated tests across all project templates.
