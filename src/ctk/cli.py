@@ -9,6 +9,8 @@ from pathlib import Path
 from ctk import __version__
 from ctk.csv_system import create_project_metadata, validate_csv
 from ctk.naming import ctk_id, slugify, validate_ctk_id, validate_slug
+from ctk.project_factory import SUPPORTED_TEMPLATES, create_project
+from ctk.checks import capability_report, check_project
 from ctk.catalog import (
     CATALOG_COLUMNS, MUSIC_COLUMNS, add_catalog_item, import_music_folder,
     init_catalog, init_game_data, init_music_csv, validate_required_csv,
@@ -69,33 +71,22 @@ def version(_: argparse.Namespace) -> int:
 
 def new_project(args: argparse.Namespace) -> int:
     root = find_project_root()
-    template = root / "templates" / args.template
-    project_slug = slugify(args.name)
-    destination = Path(args.path or project_slug).resolve()
-    if not template.exists():
+    destination = Path(args.path or slugify(args.name)).resolve()
+    try:
+        row = create_project(root, args.template, args.name, destination)
+    except FileNotFoundError:
         print(f"Template not found: {args.template}")
         print("Available templates:")
-        templates_dir = root / "templates"
-        if templates_dir.exists():
-            for item in sorted(p.name for p in templates_dir.iterdir() if p.is_dir()):
-                print(f"- {item}")
+        for item in SUPPORTED_TEMPLATES:
+            print(f"- {item}")
         return 1
-    if destination.exists():
-        print(f"Destination already exists: {destination}")
+    except FileExistsError as exc:
+        print(str(exc))
         return 1
-    shutil.copytree(template, destination)
-    metadata_path = destination / "metadata.csv"
-    row = create_project_metadata(metadata_path, args.template, args.name)
-    for templated_file in [destination / "README.md", destination / "game.yaml"]:
-        if templated_file.exists():
-            text = templated_file.read_text(encoding="utf-8")
-            text = text.replace("{{PROJECT_NAME}}", args.name.strip())
-            text = text.replace("{{PROJECT_SLUG}}", project_slug)
-            text = text.replace("{{CTK_ID}}", row["ctk_id"])
-            templated_file.write_text(text, encoding="utf-8")
     print(f"Created {args.template} project at {destination}")
     print(f"CTK ID: {row['ctk_id']}")
-    print(f"Metadata: {metadata_path}")
+    print(f"Metadata: {destination / 'metadata.csv'}")
+    print(f"Project config: {destination / 'project.yaml'}")
     return 0
 
 
@@ -206,6 +197,21 @@ def game_init_data(args: argparse.Namespace) -> int:
     print(f"Created game data CSVs in: {data_dir}")
     return 0
 
+
+def check_command(args: argparse.Namespace) -> int:
+    root = Path(args.path).resolve() if args.path else find_project_root()
+    print(f"CallMeTK OS Check: {root}")
+    for line in capability_report(root):
+        print(line)
+    errors = check_project(root)
+    if errors:
+        print(f"Check failed with {len(errors)} issue(s):")
+        for error in errors:
+            print(f"- {error}")
+        return 1
+    print("Project structure and CSV files are valid.")
+    return 0
+
 def publish(args: argparse.Namespace) -> int:
     root = find_project_root()
     message = args.message or f"Publish v{read_version(root)}"
@@ -251,7 +257,7 @@ def build_parser() -> argparse.ArgumentParser:
     p.set_defaults(func=version)
 
     p = sub.add_parser("new", help="Create a project from a template")
-    p.add_argument("template", help="Template name, e.g. website, ai-app, music-release")
+    p.add_argument("template", help="Template name: website, ai-app, music-release, education-app, or game")
     p.add_argument("name", help="Human project name, e.g. Exotic Brown Pi 2")
     p.add_argument("path", nargs="?", help="Optional destination folder. Defaults to slugified name.")
     p.set_defaults(func=new_project)
@@ -317,6 +323,10 @@ def build_parser() -> argparse.ArgumentParser:
     p_game_data = game_sub.add_parser("init-data", help="Create game data CSVs")
     p_game_data.add_argument("data_dir", nargs="?", default="data")
     p_game_data.set_defaults(func=game_init_data)
+
+    p = sub.add_parser("check", help="Validate project structure, metadata, and capabilities")
+    p.add_argument("path", nargs="?", help="Project path. Defaults to current project root.")
+    p.set_defaults(func=check_command)
 
     p = sub.add_parser("publish", help="Commit and push current project")
     p.add_argument("-m", "--message", help="Commit message")
