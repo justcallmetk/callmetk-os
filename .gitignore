@@ -8,3 +8,24 @@ build/
 *.egg-info/
 .DS_Store
 .env
+
+# Private foundations and raw source material
+private/
+docs/private/
+*.chat-export.*
+*.private.md
+.env
+.env.*
+!.env.example
+
+# Local creative libraries and databases
+callmetk-library/
+*.sqlite
+*.sqlite3
+*.db
+
+# Generated music intelligence outputs
+*.music-analysis.tmp.csv
+__pycache__/
+.pytest_cache/
+*.egg-info/
