@@ -10,7 +10,7 @@ def test_version_command(capsys):
     code = main(["version"])
     out = capsys.readouterr().out
     assert code == 0
-    assert "0.5.0" in out
+    assert "0.7.0" in out
 
 
 def test_help_command(capsys):
@@ -43,7 +43,7 @@ def test_csv_init_and_validate(tmp_path: Path):
 def test_new_project_creates_metadata(tmp_path: Path, monkeypatch):
     repo = tmp_path / "repo"
     repo.mkdir()
-    (repo / "VERSION").write_text("0.5.0\n")
+    (repo / "VERSION").write_text("0.6.1\n")
     templates = repo / "templates" / "website"
     templates.mkdir(parents=True)
     (templates / "README.md").write_text("# {{PROJECT_NAME}}\n{{CTK_ID}}\n{{PROJECT_SLUG}}\n")
